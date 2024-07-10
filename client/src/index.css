@@ -1,0 +1,33 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* index.css */
+
+body {
+    font-family: 'Inter', sans-serif;
+  }
+  
+  .bg-blue-100 {
+    background-color: #ebf8ff;
+  }
+  
+  .bg-blue-700 {
+    background-color: #2b6cb0;
+  }
+  
+  .text-blue-700 {
+    color: #2b6cb0;
+  }
+  
+  .shadow-lg {
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  }
+  
+
+  .gradient-shadow {
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08);
+  }
+  .gradient-shadow:hover {
+    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1), 0 4px 6px rgba(0, 0, 0, 0.05);
+  }
