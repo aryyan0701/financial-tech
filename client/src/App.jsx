@@ -8,6 +8,7 @@ import Foundations from "./pages/Foundations"
 import BlogSection from "./pages/Blog"
 import Debt from "./pages/Debt"
 import Schemes from "./pages/Schemes"
+import Login from "./pages/Login"
 
 
 function App() {
@@ -18,6 +19,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Landing/>}/>
         <Route path="/signup" element={<Signup/>}/>
+        <Route path="/login" element={<Login/>}/>
         <Route path="/form" element={<UserForm/>}/>
         <Route path="/dashboard" element={<Dashboard/>}/>
         <Route path="/dashboard/foundations" element={<Foundations/>}/>
