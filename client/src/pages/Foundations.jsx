@@ -13,9 +13,8 @@ function Foundations() {
             try {
                 const response = await axios.get('http://localhost:5000/api/get-generated-topics');
                 const data = response.data.advice;
-
                 if (data && data.length > 0) {
-                    setFields(data.slice(0)); 
+                    setFields(data); // Removed slicing since we want all fields
                 } else {
                     setError('No data available');
                 }
@@ -24,10 +23,9 @@ function Foundations() {
                 setError('Failed to fetch data. Please try again later.');
             }
         };
-
         fetchAdvice();
     }, []);
-
+    
     return (
         <>
             <Navbar />
@@ -42,7 +40,6 @@ function Foundations() {
                         {error && <div className="text-red-500 text-center">{error}</div>}
 
                         <div className="mt-8">
-
                             <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
                                 {fields.length > 0 ? (
                                     fields.map((field, index) => (

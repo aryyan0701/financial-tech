@@ -15,7 +15,7 @@ app.use(cors());
 const genAI = new GoogleGenerativeAI(process.env.GOOGLE_API_KEY);
 const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
-let globalAdviceText = null;  // Use a local variable for this example
+let globalAdviceText = null;
 
 app.post("/api/generate-topics", async (req, res) => {
     try {
@@ -52,23 +52,23 @@ app.post("/api/generate-topics", async (req, res) => {
 
             The topics should be numbered from 1 to 6. The response format should be as follows:
     
-            1. Budgeting Basics
-               Learn how to create a realistic budget that fits your income and helps you save money.
+            1. Topic 1
+              small description about it.
     
-            2. Saving Strategies
-               Discover effective strategies to save money for future goals.
+            2. Topic 2
+              small description about it.
     
-            3. Understanding Credit
-               Explore how credit works and its importance in personal finance.
+            3. Topic 3
+              small description about it.
     
-            4. Investing for Beginners
-               Learn the basics of investing, including different investment options like mutual funds and stocks.
+            4. Topic 4
+              small description about it.
     
-            5. Banking Essentials
-               Understand fundamental banking concepts and services available in India.
+            5. Topic 5
+              small description about it.
     
-            6. Financial Planning
-               Explore principles of financial planning to secure your future.
+            6. Topic 6
+              small description about it.
     
             Provide only the most relevant 6 topics in JSON format:
         `;
@@ -90,7 +90,7 @@ app.post("/api/generate-topics", async (req, res) => {
         console.log("Parsed Response:", parsedResponse);
 
         // Ensure the response is an array and format topics as required
-        const topics = Array.isArray(parsedResponse) ? parsedResponse : [];
+        const topics = parsedResponse.topics;
 
         const formattedTopics = topics.map(topic => ({
             headline: topic.topic,
