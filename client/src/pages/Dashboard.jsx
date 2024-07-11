@@ -28,7 +28,7 @@ const Dashboard = () => {
                                 <h2 className="card-title">Financial Foundations</h2>
                                 <p>Basics of investing in stocks, bonds, mutual funds, and other investment vehicles.</p>
                                 <div className="card-actions">
-                                    <button className="btn btn-primary"><Link to='/dashboard/foundations'>Learn More..</Link></button>
+                                    <button className="btn btn-primary"><Link to='/form/dashboard/foundations'>Learn More..</Link></button>
                                 </div>
                             </div>
                         </div>

@@ -5,7 +5,7 @@ function Landing() {
     <div
       className="hero min-h-screen"
       style={{
-        backgroundImage: "url(https://img.freepik.com/premium-vector/financial-investment-banner-vector-flat-background-website-app-banking-operations-cashback-i_497982-611.jpg)",
+        backgroundImage: "url(https://www.sss-solutions.org/wp-content/uploads/2018/01/1116146294-login-page-background-image-112.jpg)",
       }}
     >
       <div className="hero-overlay bg-opacity-60"></div>
