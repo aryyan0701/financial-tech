@@ -1,6 +1,5 @@
 import express from 'express';
 import cors from 'cors';
-import fetch from 'node-fetch';
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import dotenv from 'dotenv';
 
@@ -15,7 +14,7 @@ app.use(cors());
 const genAI = new GoogleGenerativeAI(process.env.GOOGLE_API_KEY);
 const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
-let globalAdviceText = null;
+let globalAdviceText; // Define globally to hold advice data
 
 app.post("/api/generate-topics", async (req, res) => {
     try {
@@ -51,59 +50,65 @@ app.post("/api/generate-topics", async (req, res) => {
             25. Financial Resources and Education
 
             The topics should be numbered from 1 to 6. The response format should be as follows:
-    
+
+            intro: ${name} should follow these strategies as per their criteria..
+
             1. Topic 1
-              small description about it.
-    
+              Small description about it.
+
             2. Topic 2
-              small description about it.
-    
+              Small description about it.
+
             3. Topic 3
-              small description about it.
-    
+              Small description about it.
+
             4. Topic 4
-              small description about it.
-    
+              Small description about it.
+
             5. Topic 5
-              small description about it.
-    
+              Small description about it.
+
             6. Topic 6
-              small description about it.
-    
+              Small description about it.
+
             Provide only the most relevant 6 topics in JSON format:
         `;
 
         console.log("Generated Prompt:", prompt);
 
         const result = await model.generateContent(prompt);
-        const response = await result.response;
-        const text = await response.text();
-
-        console.log("Model Response:", text);
+        const text = result.response.text(); // Get the text response
 
         // Clean the response to remove backticks and ```json code block
         const cleanedText = text.replace(/```json/g, '').replace(/```/g, '');
 
-        // Parse JSON string into JavaScript object
+        // Parse cleaned text into JSON
         const parsedResponse = JSON.parse(cleanedText);
 
         console.log("Parsed Response:", parsedResponse);
 
-        // Ensure the response is an array and format topics as required
-        const topics = parsedResponse.topics;
+        // Set globalAdviceText to the parsed response
+        globalAdviceText = parsedResponse;
 
-        const formattedTopics = topics.map(topic => ({
-            headline: topic.topic,
-            description: topic.description,
-        }));
+        // Construct the formatted topics array
+        const formattedTopics = [];
+        for (let i = 1; i <= 6; i++) {
+            const topic = parsedResponse[i];
+            if (topic) {
+                formattedTopics.push({
+                    headline: topic.Topic || topic.topic,
+                    description: topic.Description || topic.description,
+                });
+            }
+        }
 
         console.log("Formatted Topics:", formattedTopics);
 
-        // Update local variable
-        globalAdviceText = formattedTopics;
-
         // Return formatted topics as JSON response
-        res.json({ advice: formattedTopics });
+        res.json({ 
+            intro: `${name} should follow these strategies as per their criteria..`,
+            topics: formattedTopics 
+        });
     } catch (error) {
         console.error('Error generating topics:', error);
         res.status(500).json({ error: 'Failed to generate topics' });
@@ -111,10 +116,17 @@ app.post("/api/generate-topics", async (req, res) => {
 });
 
 app.get('/api/get-generated-topics', (req, res) => {
-    if (globalAdviceText) {
+    try {
+        // Check if globalAdviceText is populated
+        if (!globalAdviceText) {
+            throw new Error('Advice data not found');
+        }
+
+        // Return advice data as JSON response
         res.json({ advice: globalAdviceText });
-    } else {
-        res.status(404).json({ error: 'No topics generated yet' });
+    } catch (error) {
+        console.error('Error fetching generated fields:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
     }
 });
 

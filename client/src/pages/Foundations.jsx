@@ -5,27 +5,27 @@ import Footer from '../components/Footer';
 import axios from 'axios';
 
 function Foundations() {
-    const [fields, setFields] = useState([]);
+    const [advice, setAdvice] = useState(null);
     const [error, setError] = useState('');
 
     useEffect(() => {
         const fetchAdvice = async () => {
             try {
                 const response = await axios.get('http://localhost:5000/api/get-generated-topics');
-                const data = response.data.advice;
-                if (data && data.length > 0) {
-                    setFields(data); // Removed slicing since we want all fields
+                const data = response.data;
+                if (data) {
+                    setAdvice(data);
                 } else {
                     setError('No data available');
                 }
             } catch (error) {
-                console.error('Error fetching generated fields:', error);
+                console.error('Error fetching generated topics:', error);
                 setError('Failed to fetch data. Please try again later.');
             }
         };
         fetchAdvice();
     }, []);
-    
+
     return (
         <>
             <Navbar />
@@ -40,18 +40,27 @@ function Foundations() {
                         {error && <div className="text-red-500 text-center">{error}</div>}
 
                         <div className="mt-8">
-                            <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
-                                {fields.length > 0 ? (
-                                    fields.map((field, index) => (
-                                        <div key={index} className="block rounded-xl border border-gray-800 p-8 shadow-xl transition hover:border-blue-500/10 hover:shadow-blue-500/10">
-                                            <h2 className="mt-4 text-xl font-bold text-black">{field.headline}</h2>
-                                            <p className="mt-1 text-sm text-gray-500">{field.description}</p>
-                                        </div>
-                                    ))
-                                ) : (
-                                    <div>Loading...</div>
-                                )}
-                            </div>
+                            {advice ? (
+                                <>
+                                    <div className="text-center mb-8">
+                                        <p className="text-lg text-gray-700">{advice.intro}</p>
+                                    </div>
+                                    <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
+                                        {advice.topics && advice.topics.length > 0 ? (
+                                            advice.topics.map((topic, index) => (
+                                                <div key={index} className="block rounded-xl border border-gray-800 p-8 shadow-xl transition hover:border-blue-500/10 hover:shadow-blue-500/10">
+                                                    <h2 className="mt-4 text-xl font-bold text-black">{topic.headline}</h2>
+                                                    <p className="mt-1 text-sm text-gray-500">{topic.description}</p>
+                                                </div>
+                                            ))
+                                        ) : (
+                                            <div className="text-center mt-8">No topics available</div>
+                                        )}
+                                    </div>
+                                </>
+                            ) : (
+                                <div className="text-center mt-8">Loading...</div>
+                            )}
                         </div>
                     </div>
                 </section>
