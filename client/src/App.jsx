@@ -9,6 +9,7 @@ import BlogSection from "./pages/Blog"
 import Debt from "./pages/Debt"
 import Schemes from "./pages/Schemes"
 import Login from "./pages/Login"
+import Profile from "./pages/Profile"
 
 
 function App() {
@@ -26,6 +27,7 @@ function App() {
         <Route path="/blogs" element={<BlogSection/>}/>
         <Route path="/dashboard/foundations/debt" element={<Debt/>}/>
         <Route path="/dashboard/scheme" element={<Schemes/>}/>
+        <Route path="/dashboard/profile" element={<Profile/>}/>
       </Routes>
     </Router>
     </>
