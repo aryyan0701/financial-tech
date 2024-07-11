@@ -1,12 +1,17 @@
 import React from 'react'
-import {useNavigate,  Link } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
 
 function Signup() {
-  
+
   const navigate = useNavigate();
   return (
-<>
+    <>
+{/*
+  Heads up! 👋
 
+  Plugins:
+    - @tailwindcss/forms
+*/}
 
 <section className="bg-white">
   <div className="lg:grid lg:min-h-screen lg:grid-cols-12">
@@ -34,7 +39,7 @@ function Signup() {
         </a>
 
         <h2 className="mt-6 text-2xl font-bold text-white sm:text-3xl md:text-4xl">
-        Fino-tech 🦑
+          Welcome to Fino-tech 🦑
         </h2>
 
         <p className="mt-4 leading-relaxed text-white/90">
@@ -166,19 +171,20 @@ function Signup() {
           <div className="col-span-6 sm:flex sm:items-center sm:gap-4">
             <button
               className="inline-block shrink-0 rounded-md border border-blue-600 bg-blue-600 px-12 py-3 text-sm font-medium text-white transition hover:bg-transparent hover:text-blue-600 focus:outline-none focus:ring active:text-blue-500"
-            ><a href='form'>Create an account</a>
+            >
+              Create an account
             </button>
 
             <p className="mt-4 text-sm text-gray-500 sm:mt-0">
               Already have an account?
-              <a href="#" className="text-gray-700 underline">Log in</a>.
+              <a href="./login" className="text-gray-700 underline">Log in</a>.
             </p>
           </div>
         </form>
       </div>
     </main>
   </div>
-</section> 
+</section>
     </>
   )
 }
