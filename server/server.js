@@ -19,8 +19,6 @@ let globalAdviceText; // Define globally to hold advice data
 app.post("/api/generate-topics", async (req, res) => {
     try {
         const { name, age, gender, salary, city } = req.body;
-        console.log("Received data:", { name, age, gender, salary, city });
-        
         const prompt = `
             Generate six relevant financial topics for ${name}, a ${age}-year-old ${gender} earning ${salary} Rs per month, living in ${city} in India. Each topic should be a headline followed by a brief description. Give them the most relevant topics from the following ones:
             1. Introduction to Money Management
@@ -74,21 +72,23 @@ app.post("/api/generate-topics", async (req, res) => {
             Provide only the most relevant 6 topics in JSON format:
         `;
 
-        console.log("Generated Prompt:", prompt);
-
         const result = await model.generateContent(prompt);
-        const text = result.response.text(); // Get the text response
+        if (!result || !result.text) {
+            throw new Error('No text returned from the AI model');
+        }
+
+        const text = result.text;
 
         // Clean the response to remove backticks and ```json code block
         const cleanedText = text.replace(/```json/g, '').replace(/```/g, '');
 
-        // Parse cleaned text into JSON
-        const parsedResponse = JSON.parse(cleanedText);
-
-        console.log("Parsed Response:", parsedResponse);
-
-        // Set globalAdviceText to the parsed response
-        globalAdviceText = parsedResponse;
+        let parsedResponse;
+        try {
+            parsedResponse = JSON.parse(cleanedText);
+        } catch (error) {
+            console.error('Failed to parse JSON:', error);
+            return res.status(500).json({ error: 'Failed to parse JSON response from AI' });
+        }
 
         // Construct the formatted topics array
         const formattedTopics = [];
@@ -102,15 +102,16 @@ app.post("/api/generate-topics", async (req, res) => {
             }
         }
 
-        console.log("Formatted Topics:", formattedTopics);
+        globalAdviceText = { intro: `${name} should follow these strategies as per their criteria..`, topics: formattedTopics };
 
-        // Return formatted topics as JSON response
-        res.json({ 
-            intro: `${name} should follow these strategies as per their criteria..`,
-            topics: formattedTopics 
-        });
+        res.json(globalAdviceText);
     } catch (error) {
         console.error('Error generating topics:', error);
+
+        if (error.status === 503) {
+            return res.status(503).json({ error: 'The AI service is currently unavailable. Please try again later.' });
+        }
+
         res.status(500).json({ error: 'Failed to generate topics' });
     }
 });

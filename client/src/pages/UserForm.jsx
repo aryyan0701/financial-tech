@@ -17,6 +17,12 @@ function UserForm() {
     marketingAccept: false,
   });
 
+  const handleGenderClick = (selectedGender) => {
+    setGender(selectedGender);
+    setUserData({ ...userData, gender: selectedGender });
+  };
+
+  
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
     const val = type === 'checkbox' ? checked : value;
@@ -36,8 +42,6 @@ function UserForm() {
     }
   };
   
-  
-
 
   return (
     <>
@@ -148,21 +152,21 @@ function UserForm() {
               <button
                 type="button"
                 className={`p-2 border rounded ${gender === 'male' ? 'bg-green-500 text-white' : ''}`}
-                onClick={() => setGender('male')}
+                onClick={() => handleGenderClick('male')}
               >
                 Male <IoMdMale className="inline ml-2 mb-1" />
               </button>
               <button
                 type="button"
                 className={`p-2 border rounded ${gender === 'female' ? 'bg-green-500 text-white' : ''}`}
-                onClick={() => setGender('female')}
+                onClick={() => handleGenderClick('female')}
               >
                 Female <IoFemaleSharp className="inline ml-2 mb-1" />
               </button>
               <button
                 type="button"
                 className={`p-2 border rounded ${gender === 'transgender' ? 'bg-green-500 text-white' : ''}`}
-                onClick={() => setGender('transgender')}
+                onClick={() => handleGenderClick('transgender')}
               >
                 Transgender <FaTransgender className="inline ml-2 mb-1" />
               </button>
